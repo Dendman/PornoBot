@@ -74,8 +74,17 @@ public class TelegramBot extends TelegramLongPollingBot {
                     sendMessage(chatId, "Пока не работает:(");
                     break;
                 case "/anime":
-                    sendImageUploadingAFile(chatId);
+                    File[] files = new File( "/home/denis/Загрузки/PornoBot/src/main/resources/anime" ).listFiles();
+                    Random rand = new Random();
+                    sendImageUploadingAFile(chatId, files[rand.nextInt(files.length)]);
                     break;
+                case "/tride":
+                    File[] files2 = new File("/home/denis/Загрузки/PornoBot/src/main/resources/tride").listFiles();
+                    Random rand2 = new Random();
+                    sendImageUploadingAFile( chatId, files2[rand2.nextInt(files2.length)]);
+                    break;
+
+
             }
 
         }
@@ -99,16 +108,13 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    public void sendImageUploadingAFile(Long chatId) {
+    public void sendImageUploadingAFile(Long chatId, File file) {
         // Create send method
         SendPhoto sendPhotoRequest = new SendPhoto();
         // Set destination chat id
         sendPhotoRequest.setChatId(String.valueOf(chatId));
         // Set the photo file as a new photo (You can also use InputStream with a constructor overload)
-        Random rand = new Random();
-        File[] files = new File( "/home/denis/Загрузки/PornoBot/src/main/resources/anime" ).listFiles();
-        File file = files[ rand.nextInt( files.length ) ];
-        sendPhotoRequest.setPhoto(new InputFile(new File(file.getAbsolutePath())));
+        sendPhotoRequest.setPhoto(new InputFile(file));
         try {
             // Execute the method
             execute(sendPhotoRequest);
